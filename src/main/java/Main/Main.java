@@ -15,6 +15,7 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
  */
 public class Main {
 	public static PrintWriter out;
+	public static final char PREFIX = '-';
 	public static void main(String[] args) throws FileNotFoundException, LoginException, InterruptedException {
 		// Initializing log file
 		out = new PrintWriter(new File("EventLogs.logs"));
@@ -35,7 +36,12 @@ public class Main {
 		// Waiting for API to connect
 		jda.awaitReady();
 
+		jda.addEventListener(new Help());
+
 	}
+
+
+
 
 }
 
