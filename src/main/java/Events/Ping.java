@@ -14,6 +14,8 @@ public class Ping extends ListenerAdapter {
         String message = event.getMessage().getContentRaw();
 
         if (message.equalsIgnoreCase(Main.PREFIX + "ping") ) {
+            Main.log("-> Ping command executed by " + event.getAuthor().getName());
+
             EmbedBuilder eb = new EmbedBuilder();
 
             eb.setColor(new Color(115, 138, 219));

@@ -48,7 +48,11 @@ public class Main {
 
 	}
 
+	public static void log(String message) {
+		out.println(message);
+		out.flush();
 
+	}
 
 
 }

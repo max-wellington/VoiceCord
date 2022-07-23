@@ -14,6 +14,8 @@ public class Help extends ListenerAdapter {
         String message = event.getMessage().getContentRaw();
 
         if (message.equalsIgnoreCase(Main.PREFIX + "help") ) {
+            Main.log("-> Help command executed by " + event.getAuthor().getName());
+
             EmbedBuilder eb = new EmbedBuilder();
 
             eb.setColor(new Color(115, 138, 219));
