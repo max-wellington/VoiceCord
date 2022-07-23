@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>main</groupId>
     <artifactId>VoiceCord</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>PRE-1.0-ALPHA</version>
     <packaging>jar</packaging>
     
     <dependencies>

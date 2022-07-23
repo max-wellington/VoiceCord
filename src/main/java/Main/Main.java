@@ -44,6 +44,7 @@ public class Main {
 
 		jda.addEventListener(new Help());
 		jda.addEventListener(new Kill());
+		jda.addEventListener(new Ping());
 
 	}
 
