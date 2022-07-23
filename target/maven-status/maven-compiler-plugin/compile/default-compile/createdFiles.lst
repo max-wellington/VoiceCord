@@ -1,4 +1,5 @@
 Events\Help.class
+Events\Kill.class
 Main\Main.class
 Dependencies\temp.class
 Dependencies\FastInputReader.class

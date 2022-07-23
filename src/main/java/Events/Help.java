@@ -1,7 +1,5 @@
 package Events;
 
-import java.util.*;
-import java.io.*;
 import Main.Main;
 import java.awt.Color;
 import net.dv8tion.jda.api.EmbedBuilder;

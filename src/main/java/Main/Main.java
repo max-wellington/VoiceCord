@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
+
 /**
  * @author ICAZ117
  * @author Fishpaste
@@ -16,6 +17,7 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 public class Main {
 	public static PrintWriter out;
 	public static final char PREFIX = '-';
+	public static HashSet<Long> admins = new HashSet<>();
 	public static void main(String[] args) throws FileNotFoundException, LoginException, InterruptedException {
 		// Initializing log file
 		out = new PrintWriter(new File("EventLogs.logs"));
@@ -36,7 +38,12 @@ public class Main {
 		// Waiting for API to connect
 		jda.awaitReady();
 
+		admins.add(390633990312427520L); // Ibraheem
+		admins.add(429790168883658752L); // Isaac
+		admins.add(808511479800004659L); // Maxwell
+
 		jda.addEventListener(new Help());
+		jda.addEventListener(new Kill());
 
 	}
 
