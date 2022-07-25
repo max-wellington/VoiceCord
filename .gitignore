@@ -1,3 +1,4 @@
 *.token
 *.logs
 *.db
+*.db-journal
