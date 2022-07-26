@@ -3,7 +3,7 @@ package Events;
 import Main.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 /**
@@ -12,14 +12,14 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 public class Help extends ListenerAdapter {
 
     @Override
-    public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        // Get the message content
-        String message = event.getMessage().getContentRaw();
+    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+        // Send waiting message
+        event.deferReply().queue();
 
-        // If the message is the help command, log it and execute the help command
-        if (message.equalsIgnoreCase(Main.PREFIX + "help") ) {
+        // Check the command type
+        if (event.getName().equals("help")) {
             // Log the help command
-            Main.log("-> Help command executed by " + event.getAuthor().getName());
+            Main.log("-> Help command executed by " + event.getUser().getName());
 
             // Create an embed builder
             EmbedBuilder eb = new EmbedBuilder();
@@ -35,14 +35,11 @@ public class Help extends ListenerAdapter {
             eb.addField("ping", "Returns a RestAction ping between the bot and the Discord servers", false);
             eb.addField("vm", "Records a voice message", false);
 
-            // Set the embed footer
-            eb.setFooter("Prefix: " + Main.PREFIX);
-
             // Build the embed
             MessageEmbed embed = eb.build();
 
             // Send the embed to the channel
-            event.getChannel().sendMessage(embed).queue();
+            event.getHook().sendMessageEmbeds(embed).queue();
         }
     }
 }

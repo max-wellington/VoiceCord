@@ -4,7 +4,7 @@ import Main.Main;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 /**
@@ -13,14 +13,14 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 public class Ping extends ListenerAdapter {
 
 	@Override
-	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-		// Get the message content
-		String message = event.getMessage().getContentRaw();
+	public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+		// Send waiting message
+		event.deferReply().queue();
 
-		// If the message is the ping command, log it and execute the ping command
-		if (message.equalsIgnoreCase(Main.PREFIX + "ping")) {
+		// Check the command type
+		if (event.getName().equals("ping")) {
 			// Log the ping command
-			Main.log("-> Ping command executed by " + event.getAuthor().getName());
+			Main.log("-> Ping command executed by " + event.getUser().getName());
 
 			// Create an embed builder
 			EmbedBuilder eb = new EmbedBuilder();
@@ -36,15 +36,18 @@ public class Ping extends ListenerAdapter {
 
 					// Build the embed and queue the message to be sent
 					MessageEmbed embed = eb.build();
-					event.getChannel().sendMessage(embed).queue();
+
+					// Send the message as a response to the slash command
+					event.getHook().sendMessageEmbeds(embed).queue();
 				});
 			} catch (Exception e) {
 				// If an exception is thrown, log it and send an error message to the channel
 				Main.log("-> Error: " + e.getMessage());
-				event.getChannel().sendMessage("Error: RestAction ping is currently unavailable").queue();
+				event.getHook().sendMessage("Error: RestAction ping is currently unavailable").queue();
 			}
-
 		}
+
+
 	}
 
 

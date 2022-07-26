@@ -2,11 +2,7 @@ package Events;
 
 import Main.Main;
 
-import java.awt.Color;
-
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 /**
@@ -15,18 +11,19 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 public class VM extends ListenerAdapter {
 
 	@Override
-	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-		// Get the message content
-		String message = event.getMessage().getContentRaw();
+	public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+		// Send waiting message
+		event.deferReply(true).queue();
 
-		// If the message is the voice message command, log it and execute the voice message command
-		if (message.equalsIgnoreCase(Main.PREFIX + "vm")) {
+		// Check the command type
+		if (event.getName().equals("vm")) {
 			// Log the voice message command
-			Main.log("-> Voice message command executed by " + event.getAuthor().getName());
+			Main.log("-> Voice message command executed by " + event.getUser().getName());
 
 			// Create a voice channel
-			event.getGuild().createVoiceChannel(event.getAuthor().getName()).queue();
+			event.getGuild().createVoiceChannel(event.getUser().getName()).queue();
 
+			event.getHook().sendMessage("Create channel").queue();
 		}
 	}
 

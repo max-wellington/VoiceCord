@@ -2,7 +2,7 @@ package Events;
 
 import Main.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.sql.SQLException;
@@ -13,14 +13,14 @@ import java.sql.SQLException;
 public class Kill extends ListenerAdapter {
 
 	@Override
-	public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-		// Get the message content
-		String message = event.getMessage().getContentRaw();
+	public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+		// Send waiting message
+		event.deferReply().queue();
 
 		// If the message is the kill command AND the message was sent by a bot admin, log it and execute the kill command
-		if (message.equalsIgnoreCase(Main.PREFIX + "kill") && (Main.admins.contains(event.getAuthor().getIdLong()))) {
+		if (event.getName().equals("kill") && (Main.admins.contains(event.getUser().getIdLong()))) {
 			// Log the kill command
-			Main.log("-> Kill command executed by " + event.getAuthor().getName());
+			Main.log("-> Kill command executed by " + event.getUser().getName());
 
 			// Create an embed builder
 			EmbedBuilder eb = new EmbedBuilder();
@@ -32,7 +32,7 @@ public class Kill extends ListenerAdapter {
 			eb.setDescription("Terminating program execution...");
 
 			// Build the embed and queue the message to be sent
-			event.getChannel().sendMessage(eb.build()).queue();
+			event.getHook().sendMessageEmbeds(eb.build()).queue();
 
 			// Close the PrintWriter to the log file
 			Main.out.close();

@@ -10,6 +10,7 @@ import javax.security.auth.login.LoginException;
 
 import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
 /**
@@ -20,7 +21,6 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 public class Main {
 
 	public static PrintWriter out;
-	public static final char PREFIX = '-';
 	public static HashSet<Long> admins = new HashSet<>();
 	public static final Color EMBED_COLOR = new Color(115, 138, 219);
 	public static Connection db;
@@ -57,12 +57,16 @@ public class Main {
 				GatewayIntent.DIRECT_MESSAGE_REACTIONS,
 				GatewayIntent.DIRECT_MESSAGE_TYPING,
 				GatewayIntent.GUILD_BANS,
-				GatewayIntent.GUILD_EMOJIS,
+				GatewayIntent.GUILD_EMOJIS_AND_STICKERS,
 				GatewayIntent.GUILD_INVITES,
+				GatewayIntent.GUILD_MEMBERS,
 				GatewayIntent.GUILD_MESSAGES,
 				GatewayIntent.GUILD_MESSAGE_REACTIONS,
 				GatewayIntent.GUILD_MESSAGE_TYPING,
-				GatewayIntent.GUILD_VOICE_STATES).setActivity(Activity.playing("Alpha Build 1.0")).build();
+				GatewayIntent.GUILD_PRESENCES,
+				GatewayIntent.GUILD_VOICE_STATES,
+				GatewayIntent.GUILD_WEBHOOKS,
+				GatewayIntent.MESSAGE_CONTENT).setActivity(Activity.playing("Alpha Build 1.0")).build();
 
 		// Waiting for API to connect
 		jda.awaitReady();
@@ -72,18 +76,25 @@ public class Main {
 		admins.add(429790168883658752L); // Isaac
 		admins.add(808511479800004659L); // Maxwell
 
+		jda.updateCommands().addCommands(
+				Commands.slash("ping", "Returns the RestAction ping"),
+				Commands.slash("help", "Displays a help menu"),
+				Commands.slash("vm", "Sends a voice message"),
+				Commands.slash("kill", "Kills the bot")
+		).queue();
+
 		// Add event listeners
-		jda.addEventListener(new Help());
-		jda.addEventListener(new Kill());
 		jda.addEventListener(new Ping());
+		jda.addEventListener(new Help());
 		jda.addEventListener(new VM());
+		jda.addEventListener(new Kill());
 	}
 
 	/**
 	 * Inserts a new row into the channelConfig table
 	 *
 	 * @param serverID The server's ID
-	 * @param roles The roles to hide VM channels from
+	 * @param roles    The roles to hide VM channels from
 	 * @return True if the row was inserted, false if it was not
 	 */
 	public static boolean insert(long serverID, String roles) {
@@ -100,7 +111,7 @@ public class Main {
 	 * Updates a row in the channelConfig table
 	 *
 	 * @param serverID The server's ID
-	 * @param roles The roles to hide VM channels from
+	 * @param roles    The roles to hide VM channels from
 	 * @return True if the row was updated, false if it was not
 	 */
 	public static boolean update(long serverID, String roles) {
