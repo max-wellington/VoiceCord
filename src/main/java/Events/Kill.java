@@ -14,11 +14,11 @@ public class Kill extends ListenerAdapter {
 
 	@Override
 	public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-		// Send waiting message
-		event.deferReply().queue();
-
 		// If the message is the kill command AND the message was sent by a bot admin, log it and execute the kill command
 		if (event.getName().equals("kill") && (Main.admins.contains(event.getUser().getIdLong()))) {
+			// Send waiting message
+			event.deferReply().queue();
+
 			// Log the kill command
 			Main.log("-> Kill command executed by " + event.getUser().getName());
 

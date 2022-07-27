@@ -14,11 +14,11 @@ public class Ping extends ListenerAdapter {
 
 	@Override
 	public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-		// Send waiting message
-		event.deferReply().queue();
-
 		// Check the command type
 		if (event.getName().equals("ping")) {
+			// Send waiting message
+			event.deferReply().queue();
+
 			// Log the ping command
 			Main.log("-> Ping command executed by " + event.getUser().getName());
 

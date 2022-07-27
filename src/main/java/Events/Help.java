@@ -13,11 +13,11 @@ public class Help extends ListenerAdapter {
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        // Send waiting message
-        event.deferReply().queue();
-
         // Check the command type
         if (event.getName().equals("help")) {
+            // Send waiting message
+            event.deferReply().queue();
+
             // Log the help command
             Main.log("-> Help command executed by " + event.getUser().getName());
 
