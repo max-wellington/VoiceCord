@@ -1,5 +1,6 @@
 package Main;
 
+import Dependencies.*;
 import Events.*;
 
 import java.awt.*;
@@ -8,6 +9,9 @@ import java.util.*;
 import java.sql.*;
 import javax.security.auth.login.LoginException;
 
+import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
+import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
@@ -25,8 +29,16 @@ public class Main {
 	public static final Color EMBED_COLOR = new Color(115, 138, 219);
 	public static Connection db;
 	public static Statement stmt;
+	public static AudioPlayerManager playerManager;
+	public static Map<Long, GuildAudioManager> audioManagers;
+	public static HashSet<Long> activeServers = new HashSet<>();
 
 	public static void main(String[] args) throws FileNotFoundException, LoginException, InterruptedException {
+		playerManager = new DefaultAudioPlayerManager();
+		audioManagers = new HashMap<>();
+		AudioSourceManagers.registerRemoteSources(playerManager);
+		AudioSourceManagers.registerLocalSource(playerManager);
+
 		// Initializing log file
 		out = new PrintWriter(new File("EventLogs.logs"));
 
